@@ -1,0 +1,21 @@
+{
+    "if": {
+        "allof": [
+          {
+            "field": "type",
+            "equals": "microsoft.compute/disks"
+          },
+          {
+            "field": "microsoft.compute/disks/encryption.type",
+            "notEquals": "EncryptionAtRestWithCustomerKey"
+          },
+          {
+            "field": "Microsoft.Compute/disks/encryptionSettings.keyEncryptionKey.sourceVault.id",
+            "notContains": "poste-prod-keyvault"
+          }
+        ]
+      },
+      "then": {
+        "effect": "Audit"
+      }
+}

@@ -1,0 +1,25 @@
+{
+    "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/networkInterfaces"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Network/networkInterfaces/ipconfigurations[*].publicIpAddress.id",
+              "notLike": "*"
+            }
+          },
+          {
+            "not": {
+              "field": "tags['Vendor']",
+              "equals": "Databricks"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+}

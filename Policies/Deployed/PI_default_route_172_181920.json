@@ -1,0 +1,75 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "field": "type",
+        "equals": "microsoft.network/routetables"
+      },
+      {
+        "anyOf": [
+          {
+            "count": {
+              "field": "microsoft.network/routetables/routes[*]",
+              "where": {
+                "allOf": [
+                  {
+                    "field": "microsoft.network/routetables/routes[*].addressPrefix",
+                    "like": "172.18.*"
+                  },
+                  {
+                    "field": "microsoft.network/routetables/routes[*].nextHopIpAddress",
+                    "contains": "10.60.4.136"
+                  }
+                ]
+              }
+            },
+            "greater": 0
+          },
+          {
+            "count": {
+              "field": "microsoft.network/routetables/routes[*]",
+              "where": {
+                "allOf": [
+                  {
+                    "field": "microsoft.network/routetables/routes[*].addressPrefix",
+                    "like": "172.19.*"
+                  },
+                  {
+                    "field": "microsoft.network/routetables/routes[*].nextHopIpAddress",
+                    "contains": "10.60.4.136"
+                  }
+                ]
+              }
+            },
+            "greater": 0
+          },
+          {
+            "count": {
+              "field": "microsoft.network/routetables/routes[*]",
+              "where": {
+                "allOf": [
+                  {
+                    "field": "microsoft.network/routetables/routes[*].addressPrefix",
+                    "like": "172.20.*"
+                  },
+                  {
+                    "field": "microsoft.network/routetables/routes[*].nextHopIpAddress",
+                    "contains": "10.60.4.136"
+                  }
+                ]
+              }
+            },
+            "greater": 0
+          }
+        ]
+      },
+      {
+        "field": "microsoft.network/routetables/subnets[*].id",
+        "Like": "*"
+      }
+    ]
+  },
+  "then": {
+    "effect": "audit"
+  }
+}

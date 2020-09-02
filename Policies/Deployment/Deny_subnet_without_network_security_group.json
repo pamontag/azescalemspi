@@ -1,0 +1,19 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "field": "type",
+        "equals": "Microsoft.Network/virtualNetworks/subnets"
+      },
+      {
+        "not": {
+          "field": "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroup.id",
+          "like": "*"
+        }
+      }
+    ]
+  },
+  "then": {
+    "effect": "Audit"
+  }
+}
