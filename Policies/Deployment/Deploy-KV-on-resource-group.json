@@ -17,7 +17,6 @@
           "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
         ],        
         "deployment": {
-          "location": "westeurope",
           "properties": {
             "mode": "incremental",
             "parameters": {
@@ -92,7 +91,7 @@
                 {
                   "type": "Microsoft.Resources/deployments",
                   "apiVersion": "2018-05-01",
-                  "name": "[concat(resourceGroup().Name,'_',parameters('keyVaultName'))]",
+                  "name": "[concat(resourceGroup().Name,parameters('keyVaultName'))]",
                   "resourceGroup": "[resourceGroup().Name]",
                   "properties": {
                     "mode": "Incremental",
@@ -104,7 +103,7 @@
                       "resources": [
                         {
                           "type": "Microsoft.KeyVault/vaults",
-                          "name": "[concat(resourceGroup().Name,'_',parameters('keyVaultName'))]",
+                          "name": "[concat(resourceGroup().Name,parameters('keyVaultName'))]",
                           "apiVersion": "2018-02-14",
                           "location": "[parameters('location')]",
                           "properties": {
@@ -148,7 +147,7 @@
   "parameters": {
     "keyVaultName": {
       "type": "String",
-      "defaultValue": "postergkeyvault",
+      "defaultValue": "pikv",
       "metadata": {
         "description": "Specifies the name of the key vault."
       }
