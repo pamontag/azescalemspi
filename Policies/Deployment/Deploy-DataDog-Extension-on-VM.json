@@ -1,0 +1,123 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "field": "type",
+      "equals": "Microsoft.Compute/virtualMachines"
+    },
+    "then": {
+      "effect": "deployIfNotExists",
+      "details": {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "roleDefinitionIds": [
+          "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        ],
+        "existenceCondition": {
+          "allOf": [
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions/publisher",
+              "equals": "Datadog.Agent"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions/type",
+              "equals": "DataDogAgent"
+            }
+          ]
+        },
+        "deployment": {
+          "properties": {
+            "mode": "incremental",
+            "parameters": {
+              "ApiKey": {
+                "value": "[parameters('ApiKey')]"
+              },
+              "DefaultExtensionName": {
+                "value": "[parameters('DefaultExtensionName')]"
+              },
+              "vmName": {
+                "value": "[field('name')]"
+              }
+            },
+            "template": {
+              "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
+              "contentVersion": "1.0.0.0",
+              "parameters": {
+                "ApiKey": {
+                  "type": "String"
+                },
+                "DefaultExtensionName": {
+                  "type": "String"
+                },
+                "vmName": {
+                  "type": "String"
+                }
+              },
+              "variables": {},
+              "resources": [
+                {
+                  "type": "Microsoft.Resources/deployments",
+                  "apiVersion": "2018-05-01",
+                  "name": "[concat(parameters('DefaultExtensionName'),'_deploy_', substring(uniqueString(resourceGroup().id),0,6))]",
+                  "resourceGroup": "[resourceGroup().Name]",
+                  "properties": {
+                    "mode": "Incremental",
+                    "template": {
+                      "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+                      "contentVersion": "1.0.0.0",
+                      "parameters": {},
+                      "variables": {},
+                      "resources": [
+                        {
+                            "type": "Microsoft.Compute/virtualMachines",
+                            "apiVersion": "2019-07-01",
+                            "name": "[parameters('vmName')]",
+                            "location": "westeurope"
+                        },
+                        {
+                          "type": "Microsoft.Compute/virtualMachines/extensions",
+                          "apiVersion": "2019-07-01",
+                          "name": "[concat(parameters('DefaultExtensionName'),substring(uniqueString(resourceGroup().id),0,6))]",
+                          "location": "westeurope",
+                          "dependsOn": [
+                            "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+                          ],
+                          "properties": {
+                            "autoUpgradeMinorVersion": true,
+                            "publisher": "Datadog.Agent",
+                            "type": "DatadogWindowsAgent",
+                            "typeHandlerVersion": "1.0",
+                            "settings": {
+                              "api_key": "[parameters('ApiKey')]"
+                            }
+                          }
+                        }
+                      ],
+                      "outputs": {}
+                    }
+                  }
+                }
+              ],
+              "outputs": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "ApiKey": {
+      "type": "String",
+      "defaultValue": "12345678901234567890",
+      "metadata": {
+        "description": "Specifies the API key for the DataDog extension."
+      }
+    },
+    "DefaultExtensionName": {
+      "type": "String",
+      "defaultValue": "datadogext",
+      "metadata": {
+        "description": "Specifies the prefix name for the datadog extension."
+      }
+    }
+  }
+}
