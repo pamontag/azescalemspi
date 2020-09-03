@@ -91,7 +91,7 @@
                 {
                   "type": "Microsoft.Resources/deployments",
                   "apiVersion": "2018-05-01",
-                  "name": "[concat(resourceGroup().Name,parameters('keyVaultName'))]",
+                  "name": "[concat(parameters('keyVaultName'),resourceGroup().Name)]",
                   "resourceGroup": "[resourceGroup().Name]",
                   "properties": {
                     "mode": "Incremental",
@@ -103,7 +103,7 @@
                       "resources": [
                         {
                           "type": "Microsoft.KeyVault/vaults",
-                          "name": "[concat(resourceGroup().Name,parameters('keyVaultName'))]",
+                          "name": "[take(concat(parameters('keyVaultName'),replace(replace(resourceGroup().Name,'-',''),'_','')),23)]",
                           "apiVersion": "2018-02-14",
                           "location": "[parameters('location')]",
                           "properties": {
