@@ -1,0 +1,159 @@
+{
+    "mode": "All",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deployIfNotExists",
+        "details": {
+          "type": "Microsoft.RecoveryServices/vaults",
+          "deploymentScope": "subscription",
+          "existenceScope": "subscription",
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "name",
+                "like": "[parameters('vaultName')]"
+              }
+            ]
+          },
+          "deployment": {
+            "location": "westeurope",
+            "properties": {
+              "mode": "incremental",
+              "parameters": {
+                "vaultName": {
+                  "value": "[parameters('vaultName')]"
+                },
+                "vaultStorageType": {
+                  "value": "[parameters('vaultStorageType')]"
+                },
+                "rgName": {
+                  "value": "[parameters('rgName')]"
+                },
+                "location": {
+                  "value": "[parameters('location')]"
+                }
+              },
+              "template": {
+                "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "rgName": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "vaultName": {
+                    "type": "string"
+                  },
+                  "vaultStorageType": {
+                    "type": "string"
+                  }
+                },
+                "variables": {},
+                "resources": [
+                  {
+                    "type": "Microsoft.Resources/resourceGroups",
+                    "apiVersion": "2018-05-01",
+                    "name": "[parameters('rgName')]",
+                    "location": "[parameters('location')]",
+                    "properties": {}
+                  },
+                  {
+                    "type": "Microsoft.Resources/deployments",
+                    "apiVersion": "2018-05-01",
+                    "name": "[parameters('vaultName')]",
+                    "resourceGroup": "[parameters('rgName')]",
+                    "dependsOn": [
+                      "[resourceId('Microsoft.Resources/resourceGroups/',parameters('rgName'))]"
+                    ],
+                    "properties": {
+                      "mode": "Incremental",
+                      "template": {
+                        "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+                        "contentVersion": "1.0.0.0",
+                        "parameters": {},
+                        "variables": {},
+                        "resources": [
+                          {
+                            "type": "Microsoft.RecoveryServices/vaults",
+                            "apiVersion": "2018-01-10",
+                            "name": "[parameters('vaultName')]",
+                            "location": "[parameters('location')]",
+                            "sku": {
+                              "name": "RS0",
+                              "tier": "Standard"
+                            },
+                            "properties": {}
+                          },
+                          {
+                            "type": "Microsoft.RecoveryServices/vaults/backupstorageconfig",
+                            "apiVersion": "2018-01-10",
+                            "name": "[concat(parameters('vaultName'), '/vaultstorageconfig')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.RecoveryServices/vaults/', parameters('vaultName'))]"
+                            ],
+                            "properties": {
+                                "StorageModelType":"[parameters('vaultStorageType')]"
+                            }
+                          }                          
+                        ],
+                        "outputs": {}                      
+                      }
+                    }
+                  }
+                ],
+                "outputs": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "rgName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "rgName",
+          "description": "Provide name for resource group."
+        },
+        "defaultValue": "AZtest24"
+      },
+      "vaultName": {
+        "type": "String",
+        "metadata": {
+          "description": "Name of the Vault"
+        },
+        "defaultValue": "BVtest24"
+      },
+      "vaultStorageType": {
+        "type": "String",
+        "defaultValue": "GeoRedundant",
+        "allowedValues": [
+          "LocallyRedundant",
+          "GeoRedundant"
+        ],
+        "metadata": {
+          "description": "Change Vault Storage Type (not allowed if the vault has registered backups)"
+        }
+      },
+      "location": {
+        "type": "String",
+        "defaultValue": "westeurope",
+        "metadata": {
+          "description": "Location for all resources."
+        }
+      }
+    }
+  }
