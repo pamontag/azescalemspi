@@ -31,9 +31,6 @@
               "ApiKey": {
                 "value": "[parameters('ApiKey')]"
               },
-              "DefaultExtensionName": {
-                "value": "[parameters('DefaultExtensionName')]"
-              },
               "vmName": {
                 "value": "[field('name')]"
               }
@@ -45,9 +42,6 @@
                 "ApiKey": {
                   "type": "String"
                 },
-                "DefaultExtensionName": {
-                  "type": "String"
-                },
                 "vmName": {
                   "type": "String"
                 }
@@ -57,7 +51,7 @@
                 {
                   "type": "Microsoft.Resources/deployments",
                   "apiVersion": "2018-05-01",
-                  "name": "[concat(parameters('DefaultExtensionName'),'_deploy_', substring(uniqueString(resourceGroup().id),0,6))]",
+                  "name": "[concat(parameters('vmName'),'_datadogagent_', substring(uniqueString(resourceGroup().id),0,6))]",
                   "resourceGroup": "[resourceGroup().Name]",
                   "properties": {
                     "mode": "Incremental",
@@ -76,7 +70,7 @@
                         {
                           "type": "Microsoft.Compute/virtualMachines/extensions",
                           "apiVersion": "2019-07-01",
-                          "name": "[concat(parameters('DefaultExtensionName'),substring(uniqueString(resourceGroup().id),0,6))]",
+                          "name": "[concat(parameters('vmName'),'/DatadogAgent')]",
                           "location": "westeurope",
                           "dependsOn": [
                             "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
@@ -86,7 +80,7 @@
                             "publisher": "Datadog.Agent",
                             "type": "DatadogWindowsAgent",
                             "typeHandlerVersion": "1.0",
-                            "settings": {
+                            "protectedSettings": {
                               "api_key": "[parameters('ApiKey')]"
                             }
                           }
@@ -110,13 +104,6 @@
       "defaultValue": "12345678901234567890",
       "metadata": {
         "description": "Specifies the API key for the DataDog extension."
-      }
-    },
-    "DefaultExtensionName": {
-      "type": "String",
-      "defaultValue": "datadogext",
-      "metadata": {
-        "description": "Specifies the prefix name for the datadog extension."
       }
     }
   }
