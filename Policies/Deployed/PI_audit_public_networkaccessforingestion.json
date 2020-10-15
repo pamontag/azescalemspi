@@ -1,0 +1,33 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "anyOf": [
+          {
+            "field": "type",
+            "equals": "microsoft.insights/components"
+          },
+          {
+            "field": "type",
+            "equals": "microsoft.operationalinsights/workspaces"
+          }
+        ]
+      },
+      {
+        "not": {
+          "value": "publicNetworkAccessForIngestion",
+          "equals": "enabled"
+        }
+      },
+      {
+        "not": {
+          "value": "publicNetworkAccessForQuery",
+          "equals": "enabled"
+        }
+      }
+    ]
+  },
+  "then": {
+    "effect": "audit"
+  }
+}

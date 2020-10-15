@@ -1,0 +1,27 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "anyOf": [
+          {
+            "field": "type",
+            "equals": "microsoft.network/loadbalancers"
+          },
+          {
+            "field": "type",
+            "equals": "microsoft.network/applicationgateways"
+          }
+        ]
+      },
+      {
+        "not": {
+          "value": "frontendIPConfigurations[*].properties.publicIpAddress.id",
+          "notLike": "*"
+        }
+      } 
+    ]
+  },
+  "then": {
+    "effect": "audit"
+  }
+}

@@ -1,0 +1,27 @@
+{
+    "effect": {
+      "type": "string",
+      "defaultValue": "AuditIfNotExists",
+      "allowedValues": [
+        "AuditIfNotExists",
+        "DeployIfNotExists",
+        "Disabled"
+      ],
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy"
+      }
+    },
+    "proxyCongressi_startIpAddress": {
+        "type": "string",
+        "displayName": "Proxy Congressi Start IP Address",
+        "description": "Proxy Congressi: The beginning of the IP address range. Example: 62.241.24.20",
+        "defaultValue": "62.241.24.20"
+     },
+     "proxyCongressi_endIpAddress": {
+        "type": "string",
+        "displayName": "Proxy Congressi End IP Address",
+        "description": "Proxy Congressi: The end of the IP address range. Example: 62.241.24.29",
+        "defaultValue": "62.241.24.29"
+     }
+  }

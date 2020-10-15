@@ -1,0 +1,26 @@
+{
+  "effect": {
+    "type": "String",
+    "defaultValue": "Audit",
+    "allowedValues": [
+      "Audit",
+      "Disabled"
+    ],
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
+  },
+  "firewall1_IpAddress": {
+    "type": "string",
+    "displayName": "Firewall 1 Ip Address",
+    "description": "Ip Address del Firewall 1. Example: 10.60.4.136",
+    "defaultValue": "10.60.4.136"
+ },
+ "firewall2_IpAddress": {
+    "type": "string",
+    "displayName": "Firewall 2 Ip Address",
+    "description": "Ip Address del Firewall 2. Example: 10.60.4.137",
+    "defaultValue": "10.60.4.137"
+ }
+}

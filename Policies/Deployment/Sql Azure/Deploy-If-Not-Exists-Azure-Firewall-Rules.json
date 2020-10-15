@@ -1,0 +1,85 @@
+{
+  "if": {
+    "field": "type",
+    "equals": "Microsoft.Sql/servers"
+  },
+  "then": {
+    "effect": "[parameters('effect')]",
+    "details": {
+      "type": "Microsoft.Sql/servers/firewallRules",
+      "roleDefinitionIds": [
+        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+      ],
+      "existenceCondition": {
+        "allOf": [
+          {
+            "field": "Microsoft.Sql/servers/firewallRules/startIpAddress",
+            "equals": "[parameters('proxyCongressi_startIpAddress')]"
+          },
+          {
+            "field": "Microsoft.Sql/servers/firewallRules/endIpAddress",
+            "equals": "[parameters('proxyCongressi_endIpAddress')]"
+          }
+        ]
+      },
+      "deployment": {
+        "properties": {
+          "mode": "incremental",
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "serverName": {
+                "type": "string"
+              }
+            },
+            "resources": [
+                {
+                    "type": "Microsoft.Resources/deployments",
+                    "apiVersion": "2018-05-01",
+                    "name": "[concat(parameters('serverName'),'_firewallrules_', substring(uniqueString(resourceGroup().id),0,6))]",
+                    "resourceGroup": "[resourceGroup().Name]",
+                    "properties": {
+                      "mode": "Incremental",
+                      "template": {
+                        "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+                        "contentVersion": "1.0.0.0",
+                        "parameters": {},
+                        "variables": {},
+                        "resources": [
+                            {
+                                "type": "Microsoft.Sql/servers",
+                                "apiVersion": "2019-07-01",
+                                "name": "[parameters('serverName')]",
+                                "location": "westeurope"
+                            },
+                            {
+                                "name": "[concat(parameters('serverName'), '/proxy congressi')]",
+                                "type": "Microsoft.Sql/servers/databases/firewallRules",
+                                "apiVersion": "2015-05-01-preview",
+                                "location": "westeurope",
+                                "dependsOn": [
+                                    "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
+                                  ],
+                                "properties": {
+                                  "startIpAddress": "[parameters('proxyCongressi_startIpAddress')]",
+                                  "endIpAddress": "[parameters('proxyCongressi_endIpAddress')]"
+                                }
+                            }
+                        ],
+                        "outputs": {}
+                      }
+                    }
+                  }
+                ]
+          },
+          "parameters": {
+            "serverName": {
+              "value": "[field('name')]"
+            }
+          }
+        }
+      }
+    }
+  }
+}
