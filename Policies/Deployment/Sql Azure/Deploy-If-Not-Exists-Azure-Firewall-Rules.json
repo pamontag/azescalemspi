@@ -55,13 +55,13 @@
                     "resources": [
                       {
                         "type": "Microsoft.Sql/servers",
-                        "apiVersion": "2019-07-01",
+                        "apiVersion": "2020-08-01-preview",
                         "name": "[parameters('serverName')]",
                         "location": "westeurope"
                       },
                       {
                         "name": "[concat(parameters('serverName'), '/proxy congressi')]",
-                        "type": "Microsoft.Sql/servers/databases/firewallRules",
+                        "type": "Microsoft.Sql/servers/firewallRules",
                         "apiVersion": "2015-05-01-preview",
                         "location": "westeurope",
                         "dependsOn": [
