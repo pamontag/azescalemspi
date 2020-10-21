@@ -11,14 +11,18 @@
         "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
       ],
       "existenceCondition": {
-        "allOf": [
+        "anyOf": [
           {
-            "field": "Microsoft.Sql/servers/firewallRules/startIpAddress",
-            "equals": "[parameters('proxyCongressi_startIpAddress')]"
-          },
-          {
-            "field": "Microsoft.Sql/servers/firewallRules/endIpAddress",
-            "equals": "[parameters('proxyCongressi_endIpAddress')]"
+            "allOf": [
+              {
+                "field": "Microsoft.Sql/servers/firewallRules/startIpAddress",
+                "equals": "[parameters('startIpAddress')]"
+              },
+              {
+                "field": "Microsoft.Sql/servers/firewallRules/endIpAddress",
+                "equals": "[parameters('endIpAddress')]"
+              }
+            ]
           }
         ]
       },
@@ -32,10 +36,13 @@
               "serverName": {
                 "type": "string"
               },
-              "proxyCongressi_startIpAddress": {
+              "startIpAddress": {
                 "type": "string"
               },
-              "proxyCongressi_endIpAddress": {
+              "endIpAddress": {
+                "type": "string"
+              },
+              "firewallRuleName": {
                 "type": "string"
               }
             },
@@ -60,7 +67,7 @@
                         "location": "westeurope"
                       },
                       {
-                        "name": "[concat(parameters('serverName'), '/proxy congressi')]",
+                        "name": "[concat(parameters('serverName'), '/', parameters('firewallRuleName'))]",
                         "type": "Microsoft.Sql/servers/firewallRules",
                         "apiVersion": "2015-05-01-preview",
                         "location": "westeurope",
@@ -68,8 +75,8 @@
                           "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
                         ],
                         "properties": {
-                          "startIpAddress": "[parameters('proxyCongressi_startIpAddress')]",
-                          "endIpAddress": "[parameters('proxyCongressi_endIpAddress')]"
+                          "startIpAddress": "[parameters('startIpAddress')]",
+                          "endIpAddress": "[parameters('endIpAddress')]"
                         }
                       }
                     ],
@@ -83,11 +90,14 @@
             "serverName": {
               "value": "[field('name')]"
             },
-            "proxyCongressi_startIpAddress": {
-              "value": "[parameters('proxyCongressi_startIpAddress')]"
+            "startIpAddress": {
+              "value": "[parameters('startIpAddress')]"
             },
-            "proxyCongressi_endIpAddress": {
-              "value": "[parameters('proxyCongressi_endIpAddress')]"
+            "endIpAddress": {
+              "value": "[parameters('endIpAddress')]"
+            },
+            "firewallRuleName": {
+              "value": "[parameters('firewallRuleName')]"
             }
           }
         }

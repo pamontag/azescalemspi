@@ -12,16 +12,22 @@
         "description": "Enable or disable the execution of the policy"
       }
     },
-    "proxyCongressi_startIpAddress": {
+    "startIpAddress": {
         "type": "string",
-        "displayName": "Proxy Congressi Start IP Address",
-        "description": "Proxy Congressi: The beginning of the IP address range. Example: 62.241.24.20",
+        "displayName": "Start IP Address",
+        "description": "The beginning of the IP address range. Example: 62.241.24.20",
         "defaultValue": "62.241.24.20"
      },
-     "proxyCongressi_endIpAddress": {
+     "endIpAddress": {
         "type": "string",
-        "displayName": "Proxy Congressi End IP Address",
-        "description": "Proxy Congressi: The end of the IP address range. Example: 62.241.24.29",
+        "displayName": "End IP Address",
+        "description": "The end of the IP address range. Example: 62.241.24.29",
         "defaultValue": "62.241.24.29"
+     },
+     "firewallRuleName": {
+      "type": "string",
+      "displayName": "Firewall Rule Name",
+      "description": "The name of the firewall rule to create",
+      "defaultValue": "Proxy"
      }
   }
