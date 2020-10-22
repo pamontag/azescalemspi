@@ -1,0 +1,126 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {
+        "policySetName": "sql-azure-deploy-if-not-exists-azure-firewall-rules-psd",
+        "policySetDisplayName": "Sql Azure - Audit or Deploy Azure Sql Firewall Rules White List",
+        "policySetDescription": "This initiative audits or deploy the configuration of SQL databases firewall rules white list.",
+        "policyDefinitionForFirewallRules": "sql-azure-deploy-if-not-exists-azure-sql-firewall-rules"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2019-09-01",
+            "name": "[variables('policySetName')]",
+            "properties": {
+                "displayName": "[variables('policySetDisplayName')]",
+                "description": "[variables('policySetDescription')]",
+                "policyType": "Custom",
+                "metadata": {
+                    "category": "Network"
+                },
+                "parameters": {
+                    "effect": {
+                        "type": "string",
+                        "defaultValue": "AuditIfNotExists",
+                        "allowedValues": [
+                            "AuditIfNotExists",
+                            "DeployIfNotExists",
+                            "Disabled"
+                        ],
+                        "metadata": {
+                            "displayName": "Effect",
+                            "description": "Enable or disable the execution of the policy"
+                        }
+                    },
+                    "proxyCongressi_startIpAddress": {
+                        "type": "string",
+                        "defaultValue": "62.241.24.20",
+                        "metadata": {
+                            "displayName": "Proxy Congressi Start IP Address",
+                            "description": "The beginning of the IP address range for Proxy Congressi. Example: 62.241.24.20"
+                        }
+                    },
+                    "proxyCongressi_endIpAddress": {
+                        "type": "string",
+                        "defaultValue": "62.241.24.29",
+                        "metadata": {
+                            "displayName": "Proxy Congressi End IP Address",
+                            "description": "The end of the IP address range for Proxy Congressi. Example: 62.241.24.29"
+                        }
+                    },
+                    "proxyCongressi_firewallRuleName": {
+                        "type": "string",
+                        "defaultValue": "Proxy Congressi",
+                        "metadata": {
+                            "displayName": "Proxy Congressi Firewall Rule Name",
+                            "description": "The name of the firewall rule to create for Proxy Congressi"
+                        }
+                    },
+                    "proxyPomezia_startIpAddress": {
+                        "type": "string",
+                        "defaultValue": "62.241.24.41",
+                        "metadata": {
+                            "displayName": "Proxy Pomezia Start IP Address",
+                            "description": "The beginning of the IP address range for Proxy Pomezia. Example: 62.241.24.41"
+                        }
+                    },
+                    "proxyPomezia_endIpAddress": {
+                        "type": "string",
+                        "defaultValue": "62.241.24.41",
+                        "metadata": {
+                            "displayName": "Proxy Pomezia End IP Address",
+                            "description": "The end of the IP address range for Proxy Pomezia. Example: 62.241.24.41"
+                        }
+                    },
+                    "proxyPomezia_firewallRuleName": {
+                        "type": "string",
+                        "defaultValue": "Proxy Pomezia",
+                        "metadata": {
+                            "displayName": "Proxy Pomezia Firewall Rule Name",
+                            "description": "The name of the firewall rule to create for Proxy Pomezia"
+                        }
+                    }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
+                        "policyDefinitionReferenceId": "Firewall Rules Proxy Congressi",
+                        "parameters": {
+                            "startIpAddress": {
+                                "value": "[[parameters('proxyCongressi_startIpAddress')]"
+                            },
+                            "endIpAddress": {
+                                "value": "[[parameters('proxyCongressi_endIpAddress')]"
+                            },
+                            "firewallRuleName": {
+                                "value": "[[parameters('proxyCongressi_firewallRuleName')]"
+                            },
+                            "effect": {
+                                "value": "[[parameters('effect')]"
+                            }
+                        }
+                    },
+                    {
+                        "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
+                        "policyDefinitionReferenceId": "Firewall Rules Proxy Pomezia",
+                        "parameters": {
+                            "startIpAddress": {
+                                "value": "[[parameters('proxyPomezia_startIpAddress')]"
+                            },
+                            "endIpAddress": {
+                                "value": "[[parameters('proxyPomezia_endIpAddress')]"
+                            },
+                            "firewallRuleName": {
+                                "value": "[[parameters('proxyPomezia_firewallRuleName')]"
+                            },
+                            "effect": {
+                                "value": "[[parameters('effect')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

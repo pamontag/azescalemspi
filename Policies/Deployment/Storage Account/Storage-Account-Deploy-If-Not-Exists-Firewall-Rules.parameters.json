@@ -1,0 +1,26 @@
+{
+    "effect": {
+      "type": "string",
+      "defaultValue": "AuditIfNotExists",
+      "allowedValues": [
+        "AuditIfNotExists",
+        "DeployIfNotExists",
+        "Disabled"
+      ],
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy"
+      }
+    },
+    "allowedAddressRanges": {
+        "type": "array",
+        "metadata": {
+        "displayName": "Allowed Address Ranges",
+        "description": "The list of allowed IP address ranges (Allowed internet address ranges can be provided using CIDR notation in the form 16.17.18.0/24 or as individual IP addresses like 16.17.18.19)"
+        },
+        "defaultValue": [
+          "62.241.29.44",
+          "62.241.24.69"
+        ]
+     }
+  }

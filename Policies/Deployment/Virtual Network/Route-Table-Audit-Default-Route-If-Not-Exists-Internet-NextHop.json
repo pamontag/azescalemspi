@@ -1,0 +1,69 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "field": "type",
+        "equals": "Microsoft.Network/routeTables"
+      },
+      {
+        "anyOf": [
+          {
+            "count": {
+              "field": "Microsoft.Network/routeTables/routes[*]",
+              "where": {
+                "anyOf": [
+                  {
+                    "allOf": [
+                      {
+                        "field": "Microsoft.Network/routeTables/routes[*].addressPrefix",
+                        "like": "0.0.0.0/0"
+                      },
+                      {
+                        "field": "Microsoft.Network/routeTables/routes[*].nextHopIpAddress",
+                        "contains": "[parameters('firewall1_IpAddress')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "field": "Microsoft.Network/routeTables/routes[*].addressPrefix",
+                        "like": "0.0.0.0/0"
+                      },
+                      {
+                        "field": "Microsoft.Network/routeTables/routes[*].nextHopIpAddress",
+                        "contains": "[parameters('firewall2_IpAddress')]"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "lessOrEquals": 0
+          },
+          {
+            "count": {
+              "field": "Microsoft.Network/routeTables/routes[*]",
+              "where": {
+                "allOf": [
+                  {
+                    "field": "Microsoft.Network/routeTables/routes[*].nextHopType",
+                    "contains": "Internet"
+                  }
+                ]
+              }
+            },
+            "greater": 0
+          }
+        ]
+      },
+      {
+        "field": "Microsoft.Network/routeTables/subnets[*].id",
+        "Like": "*"
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}
