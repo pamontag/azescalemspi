@@ -5,7 +5,8 @@
         "policySetName": "sql-azure-deploy-if-not-exists-azure-firewall-rules-psd",
         "policySetDisplayName": "Sql Azure - Audit or Deploy Azure Sql Firewall Rules White List",
         "policySetDescription": "This initiative audits or deploy the configuration of SQL databases firewall rules white list.",
-        "policyDefinitionForFirewallRules": "sql-azure-deploy-if-not-exists-azure-sql-firewall-rules"
+        "policyDefinitionForFirewallRules": "sql-azure-deploy-if-not-exists-azure-sql-firewall-rules",
+        "managementGroupId": "testmg"
     },
     "resources": [
         {
@@ -35,56 +36,56 @@
                     },
                     "proxyCongressi_startIpAddress": {
                         "type": "string",
-                        "defaultValue": "62.241.24.20",
+                        "defaultValue": "62.241.24.76",
                         "metadata": {
-                            "displayName": "Proxy Congressi Start IP Address",
-                            "description": "The beginning of the IP address range for Proxy Congressi. Example: 62.241.24.20"
+                            "displayName": "VPN Congressi Start IP Address",
+                            "description": "The beginning of the IP address range for VPN Congressi. Example: 62.241.24.20"
                         }
                     },
                     "proxyCongressi_endIpAddress": {
                         "type": "string",
-                        "defaultValue": "62.241.24.29",
+                        "defaultValue": "62.241.24.76",
                         "metadata": {
-                            "displayName": "Proxy Congressi End IP Address",
-                            "description": "The end of the IP address range for Proxy Congressi. Example: 62.241.24.29"
+                            "displayName": "VPN Congressi End IP Address",
+                            "description": "The end of the IP address range for VPN Congressi. Example: 62.241.24.29"
                         }
                     },
                     "proxyCongressi_firewallRuleName": {
                         "type": "string",
-                        "defaultValue": "Proxy Congressi",
+                        "defaultValue": "VPN Congressi",
                         "metadata": {
-                            "displayName": "Proxy Congressi Firewall Rule Name",
-                            "description": "The name of the firewall rule to create for Proxy Congressi"
+                            "displayName": "VPN Congressi Firewall Rule Name",
+                            "description": "The name of the firewall rule to create for VPN Congressi"
                         }
                     },
                     "proxyPomezia_startIpAddress": {
                         "type": "string",
-                        "defaultValue": "62.241.24.41",
+                        "defaultValue": "62.241.28.30",
                         "metadata": {
-                            "displayName": "Proxy Pomezia Start IP Address",
-                            "description": "The beginning of the IP address range for Proxy Pomezia. Example: 62.241.24.41"
+                            "displayName": "VPN Rozzano Start IP Address",
+                            "description": "The beginning of the IP address range for VPN Rozzano. Example: 62.241.24.41"
                         }
                     },
                     "proxyPomezia_endIpAddress": {
                         "type": "string",
-                        "defaultValue": "62.241.24.41",
+                        "defaultValue": "62.241.28.30",
                         "metadata": {
-                            "displayName": "Proxy Pomezia End IP Address",
-                            "description": "The end of the IP address range for Proxy Pomezia. Example: 62.241.24.41"
+                            "displayName": "VPN Rozzano End IP Address",
+                            "description": "The end of the IP address range for VPN Rozzano. Example: 62.241.24.41"
                         }
                     },
                     "proxyPomezia_firewallRuleName": {
                         "type": "string",
-                        "defaultValue": "Proxy Pomezia",
+                        "defaultValue": "VPN Rozzano",
                         "metadata": {
-                            "displayName": "Proxy Pomezia Firewall Rule Name",
-                            "description": "The name of the firewall rule to create for Proxy Pomezia"
+                            "displayName": "VPN Rozzano Firewall Rule Name",
+                            "description": "The name of the firewall rule to create for VPN Rozzano"
                         }
                     }
                 },
                 "policyDefinitions": [
                     {
-                        "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
+                        "policyDefinitionId": "[concat('/providers/Microsoft.Management/managementgroups/', variables('managementGroupId'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
                         "policyDefinitionReferenceId": "Firewall Rules Proxy Congressi",
                         "parameters": {
                             "startIpAddress": {
@@ -102,7 +103,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
+                        "policyDefinitionId": "[concat('/providers/Microsoft.Management/managementgroups/', variables('managementGroupId'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
                         "policyDefinitionReferenceId": "Firewall Rules Proxy Pomezia",
                         "parameters": {
                             "startIpAddress": {

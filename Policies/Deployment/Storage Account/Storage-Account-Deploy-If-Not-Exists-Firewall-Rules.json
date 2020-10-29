@@ -7,6 +7,7 @@
     "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Storage/storageAccounts",
+      "name": "[field('name')]",
       "roleDefinitionIds": [
         "/providers/Microsoft.Authorization/roleDefinitions/17d1049b-9a84-46fb-8f53-869881c3d3ab"
       ],
@@ -28,7 +29,7 @@
         "properties": {
           "mode": "incremental",
           "template": {
-            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
             "contentVersion": "1.0.0.0",
             "parameters": {
               "allowedAddressRanges": {
@@ -36,45 +37,45 @@
               },
               "storageAccountName": {
                 "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "sku": {
+                "type": "object"
               }
             },
             "resources": [
               {
-                "type": "Microsoft.Resources/deployments",
-                "apiVersion": "2018-05-01",
-                "name": "[concat(parameters('storageAccountName'),'_firewallrules_', substring(uniqueString(resourceGroup().id),0,6))]",
-                "resourceGroup": "[resourceGroup().Name]",
+                "type": "Microsoft.Storage/storageAccounts",
+                "apiVersion": "2019-06-01",
+                "name": "[parameters('storageAccountName')]",
+                "location": "[resourceGroup().Location]",
+                "kind": "[parameters('kind')]",
+                "sku": {
+                  "name": "[parameters('sku').name]",
+                  "tier": "[parameters('sku').tier]"
+                },
                 "properties": {
-                  "mode": "Incremental",
-                  "template": {
-                    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "variables": {},
-                    "resources": [
+                  "networkAcls": {
+                    "ipRules": [
                       {
-                        "type": "Microsoft.Storage/storageAccounts",
-                        "apiVersion": "2020-08-01-preview",
-                        "name": "[parameters('storageAccountName')]",
-                        "location": "westeurope",
-                        "properties": {
-                          "networkAcls": {
-                            "ipRules": [
-                              {
-                                "value": "62.241.29.69",
-                                "action": "Allow"
-                              }
-                            ],
-                            "defaultAction": "Deny"
-                          }
-                        }
+                        "value": "[parameters('allowedAddressRanges')[0]]",
+                        "action": "Allow"
+                      },
+                      {
+                        "value": "[parameters('allowedAddressRanges')[1]]",
+                        "action": "Allow"
                       }
                     ],
-                    "outputs": {}
+                    "defaultAction": "Deny"
                   }
                 }
               }
-            ]
+            ],
+            "output": {
+              "kind": "[parameters('kind')"
+            }
           },
           "parameters": {
             "storageAccountName": {
@@ -82,6 +83,12 @@
             },
             "allowedAddressRanges": {
               "value": "[parameters('allowedAddressRanges')]"
+            },
+            "kind": {
+              "value": "[field('kind')]"
+            },
+            "sku": {
+              "value": "[field('Microsoft.Storage/storageAccounts/sku')]"
             }
           }
         }
