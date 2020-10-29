@@ -64,13 +64,13 @@
                         "type": "Microsoft.Sql/servers",
                         "apiVersion": "2020-08-01-preview",
                         "name": "[parameters('serverName')]",
-                        "location": "westeurope"
+                        "location": "[resourceGroup().Location]"
                       },
                       {
                         "name": "[concat(parameters('serverName'), '/', parameters('firewallRuleName'))]",
                         "type": "Microsoft.Sql/servers/firewallRules",
                         "apiVersion": "2015-05-01-preview",
-                        "location": "westeurope",
+                        "location": "[resourceGroup().Location]",
                         "dependsOn": [
                           "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
                         ],

@@ -1,0 +1,99 @@
+{
+  "if": {
+    "field": "type",
+    "equals": "Microsoft.Web/sites"
+  },
+  "then": {
+    "effect": "[parameters('effect')]",
+    "details": {
+      "type": "Microsoft.Web/sites/config",
+      "roleDefinitionIds": [
+        "/providers/Microsoft.Authorization/roleDefinitions/de139f84-1756-47ae-9be6-808fbbe84772"
+      ],
+      "existenceCondition": {
+        "count": {
+          "field": "Microsoft.Web/sites/config/ipSecurityRestrictions[*]",
+          "where": {
+            "allOf": [
+              {
+                "field": "Microsoft.Web/sites/config/ipSecurityRestrictions[*].ipAddress",
+                "in": "[parameters('allowedAddressRanges')]"
+              }
+            ]
+          }
+        },
+        "equals": "[length(parameters('allowedAddressRanges'))]"
+      },
+      "deployment": {
+        "properties": {
+          "mode": "incremental",
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "allowedAddressRanges": {
+                "type": "array"
+              },
+              "appServiceName": {
+                "type": "string"
+              }
+            },
+            "resources": [
+              {
+                "type": "Microsoft.Web/sites",
+                "apiVersion": "2018-11-01",
+                "name": "[parameters('appServiceName')]",
+                "location": "[resourceGroup().Location]",
+                 "properties": {}
+              },
+              {
+                "name": "[concat(parameters('appServiceName'), '/web')]",
+                "type": "Microsoft.Web/sites/config",
+                "apiVersion": "2018-11-01",
+                "location": "[resourceGroup().Location]",
+                "dependsOn": [
+                  "[resourceId('Microsoft.Web/sites', parameters('appServiceName'))]"
+                ],
+                "properties": {
+                  "ipSecurityRestrictions": [
+                    {
+                      "ipAddress": "[parameters('allowedAddressRanges')[0]]",
+                      "action": "Allow",
+                      "tag": "Default",
+                      "priority": 1,
+                      "name": "vpn congressi",
+                      "description": "vpn congressi"
+                    },
+                    {
+                      "ipAddress": "[parameters('allowedAddressRanges')[1]]",
+                      "action": "Allow",
+                      "tag": "Default",
+                      "priority": 1,
+                      "name": "vpn rozzano",
+                      "description": "vpn rozzano"
+                    },
+                    {
+                      "ipAddress": "Any",
+                      "action": "Deny",
+                      "priority": 2147483647,
+                      "name": "Deny all",
+                      "description": "Deny all access"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "parameters": {
+            "appServiceName": {
+              "value": "[field('name')]"
+            },
+            "allowedAddressRanges": {
+              "value": "[parameters('allowedAddressRanges')]"
+            }
+          }
+        }
+      }
+    }
+  }
+}

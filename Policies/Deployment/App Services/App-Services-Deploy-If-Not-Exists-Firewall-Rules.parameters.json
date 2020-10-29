@@ -19,8 +19,8 @@
         "description": "The list of allowed IP address ranges (Allowed internet address ranges can be provided using CIDR notation in the form 16.17.18.0/24 or as individual IP addresses like 16.17.18.19)"
         },
         "defaultValue": [
-          "62.241.24.76",
-          "62.241.28.30"
+          "62.241.24.76/32",
+          "62.241.28.30/32"
         ]
      }
   }
