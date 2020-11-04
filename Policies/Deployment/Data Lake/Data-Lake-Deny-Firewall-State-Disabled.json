@@ -5,11 +5,11 @@
         "allOf": [
           {
             "field": "type",
-            "equals": "microsoft.datalakestore/accounts"
+            "equals": "Microsoft.DataLakeStore/accounts"
           },
           {
             "not": {
-              "field": "microsoft.datalakestore/accounts/firewallState",
+              "field": "Microsoft.DataLakeStore/accounts/firewallState",
               "equals": "Disabled"
             }
           }
@@ -19,11 +19,11 @@
         "allOf": [
           {
             "field": "type",
-            "equals": "microsoft.datalakeanalytics/accounts"
+            "equals": "Microsoft.DataLakeAnalytics/accounts"
           },
           {
             "not": {
-              "field": "microsoft.datalakeanalytics/accounts/firewallState",
+              "field": "Microsoft.DataLakeAnalytics/accounts/firewallState",
               "equals": "Disabled"
             }
           }
