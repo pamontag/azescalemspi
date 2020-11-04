@@ -1,0 +1,21 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "field": "type",
+        "equals": "microsoft.apimanagement/service"
+      },
+      {
+        
+          "count": {
+            "field": "Microsoft.ApiManagement/service/publicIPAddresses[*]"
+          },
+          "greater": 0
+        
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}

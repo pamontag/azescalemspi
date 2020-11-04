@@ -1,0 +1,97 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "anyOf": [
+          {
+            "field": "type",
+            "equals": "microsoft.search/searchservices"
+          },
+          {
+            "field": "type",
+            "equals": "microsoft.datafactory/factories"
+          },
+          {
+            "field": "type",
+            "equals": "microsoft.sql/servers"
+          },
+          {
+            "field": "type",
+            "equals": "Microsoft.CognitiveServices/accounts"
+          },
+          {
+            "field": "type",
+            "equals": "Microsoft.Batch/batchAccounts"
+          },
+          {
+            "field": "type",
+            "equals": "Microsoft.DBforPostgreSQL/servers"
+          },
+          {
+            "field": "type",
+            "equals": "Microsoft.DBforMySQL/servers"
+          },
+          {
+            "field": "type",
+            "equals": "Microsoft.DocumentDB/databaseAccounts"
+          }
+        ]
+      },
+      {
+        "anyOf": [
+          {
+            "not": {
+              "field": "microsoft.search/searchservices/publicNetworkAccess",
+              "notEquals": "enabled"
+            }
+          },
+          {
+            "not": {
+              "field": "microsoft.datafactory/factories/publicNetworkAccess",
+              "notEquals": "enabled"
+            }
+          },
+          {
+            "not": {
+              "field": "microsoft.sql/servers/publicNetworkAccess",
+              "notEquals": "enabled"
+            }
+          },
+          {
+            "not": {
+              "field": "Microsoft.CognitiveServices/accounts/publicNetworkAccess",
+              "notEquals": "enabled"
+            }
+          },
+          {
+            "not": {
+              "field": "Microsoft.Batch/batchAccounts/publicNetworkAccess",
+              "notEquals": "enabled"
+            }
+          },
+          {
+            "not": {
+              "field": "Microsoft.DBforPostgreSQL/servers/publicNetworkAccess",
+              "notEquals": "enabled"
+            }
+          },
+          {
+            "not": {
+              "field": "Microsoft.DBforMySQL/servers/publicNetworkAccess",
+              "notEquals": "enabled"
+            }
+          },
+          {
+            "not": {
+              "field": "Microsoft.DocumentDB/databaseAccounts/publicNetworkAccess",
+              "notEquals": "enabled"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}

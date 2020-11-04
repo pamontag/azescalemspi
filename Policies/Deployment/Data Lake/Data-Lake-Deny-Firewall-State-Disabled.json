@@ -1,0 +1,37 @@
+{
+  "if": {
+    "anyOf": [
+      {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "microsoft.datalakestore/accounts"
+          },
+          {
+            "not": {
+              "field": "microsoft.datalakestore/accounts/firewallState",
+              "equals": "Disabled"
+            }
+          }
+        ]
+      },
+      {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "microsoft.datalakeanalytics/accounts"
+          },
+          {
+            "not": {
+              "field": "microsoft.datalakeanalytics/accounts/firewallState",
+              "equals": "Disabled"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "if": {
+    "anyOf": [
+      {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "microsoft.insights/components"
+          },
+          {
+            "not": {
+              "field": "microsoft.insights/components/publicNetworkAccessForIngestion",
+              "Equals": "Disabled"
+            }
+          },
+          {
+            "not": {
+              "field": "microsoft.insights/components/publicNetworkAccessForQuery",
+              "Equals": "Disabled"
+            }
+          }
+        ]
+      },
+      {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "microsoft.operationalinsights/workspaces"
+          },
+          {
+            "not": {
+              "field": "microsoft.operationalinsights/workspaces/publicNetworkAccessForIngestion",
+              "Equals": "Disabled"
+            }
+          },
+          {
+            "not": {
+              "field": "microsoft.operationalinsights/workspaces/publicNetworkAccessForQuery",
+              "Equals": "Disabled"
+            }
+          }
+        ]
+      }      
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}

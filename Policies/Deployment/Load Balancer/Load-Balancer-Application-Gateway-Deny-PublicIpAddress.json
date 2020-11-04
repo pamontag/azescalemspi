@@ -1,0 +1,37 @@
+{
+  "if": {
+    "anyOf": [
+      {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/LoadBalancers"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Network/LoadBalancers/frontendIPConfigurations[*].publicIPAddress.id",
+              "notLike": "*"
+            }
+          }
+        ]
+      },
+      {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/ApplicationGateways"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Network/ApplicationGateways/frontendIPConfigurations[*].publicIPAddress.id",
+              "notLike": "*"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}

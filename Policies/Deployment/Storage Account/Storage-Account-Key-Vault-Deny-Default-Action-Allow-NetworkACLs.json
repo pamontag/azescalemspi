@@ -1,0 +1,37 @@
+{
+  "if": {
+    "anyOf": [
+      {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/StorageAccounts"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Storage/StorageAccounts/networkAcls.defaultAction",
+              "Equals": "Deny"
+            }
+          }
+        ]
+      },
+      {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.KeyVault/vaults"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Storage/StorageAccounts/networkAcls.defaultAction",
+              "Equals": "Deny"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}
