@@ -8,3 +8,5 @@
 
 `az deployment mg create --management-group-id testmg --template-file Sql-Azure-Deploy-If-Not-Exists-Azure-Firewall-Rules-Initiative.json --location westeurope`
 
+`az policy set-definition delete --name sql-azure-deploy-if-not-exists-azure-sql-firewall-rules-psd`
+

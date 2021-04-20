@@ -16,11 +16,11 @@
             "allOf": [
               {
                 "field": "Microsoft.Sql/servers/firewallRules/startIpAddress",
-                "equals": "[parameters('startIpAddress')]"
+                "equals": "[parameters('startIpAddressCheck')]"
               },
               {
                 "field": "Microsoft.Sql/servers/firewallRules/endIpAddress",
-                "equals": "[parameters('endIpAddress')]"
+                "equals": "[parameters('endIpAddressCheck')]"
               }
             ]
           }
@@ -36,52 +36,56 @@
               "serverName": {
                 "type": "string"
               },
-              "startIpAddress": {
+              "FirewallRule1_startIpAddress": {
                 "type": "string"
               },
-              "endIpAddress": {
+              "FirewallRule1_endIpAddress": {
                 "type": "string"
               },
-              "firewallRuleName": {
+              "FirewallRule1_firewallRuleName": {
+                "type": "string"
+              },
+              "FirewallRule2_startIpAddress": {
+                "type": "string"
+              },
+              "FirewallRule2_endIpAddress": {
+                "type": "string"
+              },
+              "FirewallRule2_firewallRuleName": {
                 "type": "string"
               }
             },
             "resources": [
               {
-                "type": "Microsoft.Resources/deployments",
-                "apiVersion": "2018-05-01",
-                "name": "[concat(parameters('serverName'),'_firewallrules_', substring(uniqueString(resourceGroup().id),0,6))]",
-                "resourceGroup": "[resourceGroup().Name]",
+                "type": "Microsoft.Sql/servers",
+                "apiVersion": "2020-08-01-preview",
+                "name": "[parameters('serverName')]",
+                "location": "[resourceGroup().Location]"
+              },
+              {
+                "name": "[concat(parameters('serverName'), '/', parameters('FirewallRule1_firewallRuleName'))]",
+                "type": "Microsoft.Sql/servers/firewallRules",
+                "apiVersion": "2015-05-01-preview",
+                "location": "[resourceGroup().Location]",
+                "dependsOn": [
+                  "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
+                ],
                 "properties": {
-                  "mode": "Incremental",
-                  "template": {
-                    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "variables": {},
-                    "resources": [
-                      {
-                        "type": "Microsoft.Sql/servers",
-                        "apiVersion": "2020-08-01-preview",
-                        "name": "[parameters('serverName')]",
-                        "location": "[resourceGroup().Location]"
-                      },
-                      {
-                        "name": "[concat(parameters('serverName'), '/', parameters('firewallRuleName'))]",
-                        "type": "Microsoft.Sql/servers/firewallRules",
-                        "apiVersion": "2015-05-01-preview",
-                        "location": "[resourceGroup().Location]",
-                        "dependsOn": [
-                          "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
-                        ],
-                        "properties": {
-                          "startIpAddress": "[parameters('startIpAddress')]",
-                          "endIpAddress": "[parameters('endIpAddress')]"
-                        }
-                      }
-                    ],
-                    "outputs": {}
-                  }
+                  "startIpAddress": "[parameters('FirewallRule1_startIpAddress')]",
+                  "endIpAddress": "[parameters('FirewallRule1_endIpAddress')]"
+                }
+              },
+              {
+                "name": "[concat(parameters('serverName'), '/', parameters('FirewallRule2_firewallRuleName'))]",
+                "type": "Microsoft.Sql/servers/firewallRules",
+                "apiVersion": "2015-05-01-preview",
+                "location": "[resourceGroup().Location]",
+                "dependsOn": [
+                  "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
+                ],
+                "properties": {
+                  "startIpAddress": "[parameters('FirewallRule2_startIpAddress')]",
+                  "endIpAddress": "[parameters('FirewallRule2_endIpAddress')]"
                 }
               }
             ]
@@ -90,14 +94,23 @@
             "serverName": {
               "value": "[field('name')]"
             },
-            "startIpAddress": {
-              "value": "[parameters('startIpAddress')]"
+            "FirewallRule1_startIpAddress": {
+              "value": "[parameters('FirewallRule1_startIpAddress')]"
             },
-            "endIpAddress": {
-              "value": "[parameters('endIpAddress')]"
+            "FirewallRule1_endIpAddress": {
+              "value": "[parameters('FirewallRule1_endIpAddress')]"
             },
-            "firewallRuleName": {
-              "value": "[parameters('firewallRuleName')]"
+            "FirewallRule1_firewallRuleName": {
+              "value": "[parameters('FirewallRule1_firewallRuleName')]"
+            },
+            "FirewallRule2_startIpAddress": {
+              "value": "[parameters('FirewallRule2_startIpAddress')]"
+            },
+            "FirewallRule2_endIpAddress": {
+              "value": "[parameters('FirewallRule2_endIpAddress')]"
+            },
+            "FirewallRule2_firewallRuleName": {
+              "value": "[parameters('FirewallRule2_firewallRuleName')]"
             }
           }
         }

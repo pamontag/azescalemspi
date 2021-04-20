@@ -5,7 +5,8 @@
         "policySetName": "sql-azure-deploy-if-not-exists-azure-sql-firewall-rules-psd",
         "policySetDisplayName": "Sql Azure - Audit or Deploy Azure Sql Firewall Rules White List",
         "policySetDescription": "This initiative audits or deploy the configuration of SQL databases firewall rules white list.",
-        "policyDefinitionForFirewallRules": "sql-azure-deploy-if-not-exists-azure-sql-firewall-rules"
+        "policyDefinitionForFirewallRules": "sql-azure-deploy-if-not-exists-azure-sql-firewall-rules",
+        "managementGroupId": "testmg"
     },
     "resources": [
         {
@@ -84,7 +85,7 @@
                 },
                 "policyDefinitions": [
                     {
-                        "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
+                        "policyDefinitionId": "[concat('/providers/Microsoft.Management/managementgroups/', variables('managementGroupId'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
                         "policyDefinitionReferenceId": "Firewall Rules Proxy Congressi",
                         "parameters": {
                             "startIpAddressCheck": {
@@ -117,7 +118,7 @@
                         }
                     },
                     {
-                        "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
+                        "policyDefinitionId": "[concat('/providers/Microsoft.Management/managementgroups/', variables('managementGroupId'), '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyDefinitionForFirewallRules'))]",
                         "policyDefinitionReferenceId": "Firewall Rules Proxy Pomezia",
                         "parameters": {
                             "startIpAddressCheck": {

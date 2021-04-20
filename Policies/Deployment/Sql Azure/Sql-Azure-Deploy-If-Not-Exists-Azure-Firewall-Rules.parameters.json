@@ -1,33 +1,59 @@
 {
-    "effect": {
-      "type": "string",
-      "defaultValue": "AuditIfNotExists",
-      "allowedValues": [
-        "AuditIfNotExists",
-        "DeployIfNotExists",
-        "Disabled"
-      ],
-      "metadata": {
-        "displayName": "Effect",
-        "description": "Enable or disable the execution of the policy"
-      }
-    },
-    "startIpAddress": {
-        "type": "string",
-        "displayName": "Start IP Address",
-        "description": "The beginning of the IP address range. Example: 62.241.24.20",
-        "defaultValue": "62.241.24.20"
-     },
-     "endIpAddress": {
-        "type": "string",
-        "displayName": "End IP Address",
-        "description": "The end of the IP address range. Example: 62.241.24.29",
-        "defaultValue": "62.241.24.29"
-     },
-     "firewallRuleName": {
-      "type": "string",
-      "displayName": "Firewall Rule Name",
-      "description": "The name of the firewall rule to create",
-      "defaultValue": "Proxy"
-     }
+  "effect": {
+    "type": "string",
+    "defaultValue": "AuditIfNotExists",
+    "allowedValues": ["AuditIfNotExists", "DeployIfNotExists", "Disabled"],
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
+  },
+  "startIpAddressCheck": {
+    "type": "string",
+    "displayName": "Start IP Address To Check",
+    "description": "The beginning of the IP address range. Example: 62.241.24.20",
+    "defaultValue": "62.241.24.20"
+  },
+  "endIpAddressCheck": {
+    "type": "string",
+    "displayName": "End IP Address To Check",
+    "description": "The end of the IP address range. Example: 62.241.24.29",
+    "defaultValue": "62.241.24.29"
+  },
+  "FirewallRule1_startIpAddress": {
+    "type": "string",
+    "displayName": "Firewall Rule 1 Start IP Address",
+    "description": "The beginning of the IP address range for FirewallRule1. Example: 62.241.24.20",
+    "defaultValue": "62.241.24.76"
+  },
+  "FirewallRule1_endIpAddress": {
+    "type": "string",
+    "displayName": "Firewall Rule 1 Start IP Address",
+    "description": "The beginning of the IP address range for FirewallRule1. Example: 62.241.24.20",
+    "defaultValue": "62.241.24.76"
+  },
+  "FirewallRule1_firewallRuleName": {
+    "type": "string",
+    "displayName": "Firewall Rule 1 Firewall Rule Name",
+    "description": "The name of the firewall rule to create for FirewallRule1",
+    "defaultValue": "FirewallRule1"
+  },
+  "FirewallRule2_startIpAddress": {
+    "type": "string",
+    "displayName": "Firewall Rule 2 Start IP Address",
+    "description": "The beginning of the IP address range for FireWallRule2. Example: 62.241.24.41",
+    "defaultValue": "62.241.28.30"
+  },
+  "FirewallRule2_endIpAddress": {
+    "type": "string",
+    "displayName": "Firewall Rule 2 Start IP Address",
+    "description": "The beginning of the IP address range for FireWallRule2. Example: 62.241.24.41",
+    "defaultValue": "62.241.28.30"
+  },
+  "FirewallRule2_firewallRuleName": {
+    "type": "string",
+    "displayName": "Firewall Rule 2 Firewall Rule Name",
+    "description": "The name of the firewall rule to create for FireWallRule2",
+    "defaultValue": "FireWallRule2"
   }
+}

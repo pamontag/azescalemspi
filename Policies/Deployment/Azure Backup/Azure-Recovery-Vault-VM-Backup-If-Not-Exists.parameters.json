@@ -1,0 +1,43 @@
+{
+  "vaultLocation": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Location (Specify the location of the VMs that you want to protect)",
+      "description": "Specify the location of the VMs that you want to protect. VMs should be backed up to a vault in the same location. For example - southeastasia.",
+      "strongType": "location"
+    }
+  },
+  "backupPolicyId": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Backup Policy (of type Azure VM from a vault in the location chosen above)",
+      "description": "Specify the id of the Azure backup policy to configure backup of the virtual machines. The selected Azure backup policy should be of type Azure virtual machine. This policy needs to be in a vault that is present in the location chosen above. For example - /subscriptions/<SubscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.RecoveryServices/vaults/<VaultName>/backupPolicies/<BackupPolicyName>.",
+      "strongType": "Microsoft.RecoveryServices/vaults/backupPolicies"
+    }
+  },
+  "exclusionTagName": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Exclusion Tag Name",
+      "description": "Name of the tag to use for excluding VMs from the scope of this policy. This should be used along with the Exclusion Tag Value parameter. Learn more at https://aka.ms/AppCentricVMBackupPolicy."
+    },
+    "defaultValue": ""
+  },
+  "exclusionTagValue": {
+    "type": "Array",
+    "metadata": {
+      "displayName": "Exclusion Tag Values",
+      "description": "Value of the tag to use for excluding VMs from the scope of this policy (in case of multiple values, use a comma-separated list). This should be used along with the Exclusion Tag Name parameter. Learn more at https://aka.ms/AppCentricVMBackupPolicy."
+    },
+    "defaultValue": []
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy."
+    },
+    "allowedValues": ["deployIfNotExists", "auditIfNotExists", "disabled"],
+    "defaultValue": "deployIfNotExists"
+  }
+}
